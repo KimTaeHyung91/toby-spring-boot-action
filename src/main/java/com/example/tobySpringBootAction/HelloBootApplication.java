@@ -11,6 +11,7 @@ import org.springframework.boot.web.server.WebServer;
 import org.springframework.boot.web.servlet.ServletContextInitializer;
 import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
@@ -30,22 +31,31 @@ public class HelloBootApplication {
      * 왜? 웹 API -> Http 를 통해서 API 를 제공하니깐
      */
     WebServer webServer = factory.getWebServer(servletContext -> {
-      servletContext.addServlet("hello", new HttpServlet() {
+      servletContext.addServlet("frontController", new HttpServlet() {
                       // 요청을 처리하는 서비스 객체
                       @Override
                       protected void service(HttpServletRequest req, HttpServletResponse resp)
                           throws ServletException, IOException {
+                        // 요청 URL 을 읽을 수 있는 메소드
+                        String requestURI = req.getRequestURI();
                         // 쿼리스트링으로 넘어오는 값 처리
                         String name = req.getParameter("name");
 
-                        // 웹 응답의 3가지 요소 -> 상태, Content-Type, Body(응답)
-                        resp.setStatus(HttpStatus.OK.value());
-                        resp.setHeader(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN_VALUE);
-                        resp.getWriter().println("Hello, " + name);
+                        if (requestURI.equals("/hello") && req.getMethod().equals(HttpMethod.GET.name())) {
+                          // 웹 응답의 3가지 요소 -> 상태, Content-Type, Body(응답)
+                          resp.setStatus(HttpStatus.OK.value());
+                          resp.setHeader(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN_VALUE);
+                          resp.getWriter().println("Hello, " + name);
+                        } else if (requestURI.equals("/user")) {
+                          //
+                        } else {
+                          resp.setStatus(HttpStatus.NOT_FOUND.value());
+                        }
                       }
                     })
                     // url 맵핑
-                    .addMapping("/hello");
+                    // '/*' -> frontController: 공통된 사항(보안, 인증, 다국어 처리 응답 형식, 로깅..등)를 요청 핸들러 앞단에서 처리하는 Controller
+                    .addMapping("/*");
     });
     webServer.start();
   }
