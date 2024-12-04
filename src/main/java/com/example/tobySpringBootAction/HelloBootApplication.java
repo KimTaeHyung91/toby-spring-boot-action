@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.boot.web.server.WebServer;
+import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -15,10 +16,20 @@ import org.springframework.http.MediaType;
 public class HelloBootApplication {
 
   public static void main(String[] args) {
+    /**
+     * Spring Container 의 객체를 사용하기 위해서는 아래와 같은 조건이 있음
+     * POJO: 비즈니스 수행을 하는 일반 자바 객체 e.g) HelloController
+     * Configure Metadata: Spring Container로 객체를 등록하기 위한 객체의 메타데이터 등록 e.g) registerBean
+     */
+    // ApplicationContext(=Spring Container)
+    GenericApplicationContext applicationContext = new GenericApplicationContext();
+    applicationContext.registerBean(HelloController.class);
+    // Spring Container 초기화 -> 등록되어있는 메타데이터를 초기화
+    applicationContext.refresh();
+
     // Servlet Container
     TomcatServletWebServerFactory factory = new TomcatServletWebServerFactory();
     factory.setPort(3000);
-    HelloController helloController = new HelloController();
 
     /**
      * 추상화 시켜놓음
@@ -49,13 +60,12 @@ public class HelloBootApplication {
                         if (requestURI.equals("/hello") && req.getMethod().equals(HttpMethod.GET.name())) {
                           // 쿼리스트링으로 넘어오는 값 처리
                           String name = req.getParameter("name");
+                          HelloController helloController = applicationContext.getBean(HelloController.class);
                           String hello = helloController.hello(name);
                           // 웹 응답의 3가지 요소 -> 상태, Content-Type, Body(응답)
-                          resp.setStatus(HttpStatus.OK.value());
-                          resp.setHeader(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN_VALUE);
+                          // resp.setStatus(HttpStatus.OK.value()); -> 생략 가능, 기본적으로 200
+                          resp.setContentType(MediaType.TEXT_PLAIN_VALUE);
                           resp.getWriter().println(hello);
-                        } else if (requestURI.equals("/user")) {
-                          //
                         } else {
                           resp.setStatus(HttpStatus.NOT_FOUND.value());
                         }
