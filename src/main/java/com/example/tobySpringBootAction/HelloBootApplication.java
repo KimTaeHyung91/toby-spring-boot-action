@@ -1,15 +1,12 @@
 package com.example.tobySpringBootAction;
 
 import java.io.IOException;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.boot.web.server.WebServer;
-import org.springframework.boot.web.servlet.ServletContextInitializer;
-import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -21,6 +18,7 @@ public class HelloBootApplication {
     // Servlet Container
     TomcatServletWebServerFactory factory = new TomcatServletWebServerFactory();
     factory.setPort(3000);
+    HelloController helloController = new HelloController();
 
     /**
      * 추상화 시켜놓음
@@ -38,14 +36,24 @@ public class HelloBootApplication {
                           throws ServletException, IOException {
                         // 요청 URL 을 읽을 수 있는 메소드
                         String requestURI = req.getRequestURI();
-                        // 쿼리스트링으로 넘어오는 값 처리
-                        String name = req.getParameter("name");
 
+                        /**
+                         * 요청을 받아서 처리하는 과정에서 중요한 적입이 2가지 일어남 -> 맵핑과 바인딩
+                         * 맵핑: 웹 요청의 정보를 활용해서 어떤 로직을 수행할것인가를 결정하는 개념
+                         * e.g) if (requestURI.equals("/hello") && req.getMethod().equals(HttpMethod.GET.name()))
+                         * 위 if 문은 "/hello" 이면서 Get 메소드 일때 어떤 일을 처리하라
+                         *
+                         * 바인딩: 일반적으로 웹 요청을 처리하기 위한 기술적 요소를 오픈하지않음 e.g) HelloController 가 API 요청 시 hello() 메소드를 호출하는가? No
+                         * 즉 요청의 정보를 해석하여 일반적인 Java 코드로 변환해주는것이 바인딩 e.g) req.getParameter("name") -> "/hello?name=Spring"
+                         */
                         if (requestURI.equals("/hello") && req.getMethod().equals(HttpMethod.GET.name())) {
+                          // 쿼리스트링으로 넘어오는 값 처리
+                          String name = req.getParameter("name");
+                          String hello = helloController.hello(name);
                           // 웹 응답의 3가지 요소 -> 상태, Content-Type, Body(응답)
                           resp.setStatus(HttpStatus.OK.value());
                           resp.setHeader(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN_VALUE);
-                          resp.getWriter().println("Hello, " + name);
+                          resp.getWriter().println(hello);
                         } else if (requestURI.equals("/user")) {
                           //
                         } else {
