@@ -3,7 +3,7 @@ package com.example.tobySpringBootAction;
 import java.util.Objects;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Spring Container 안에서 요청(request)을 처리
@@ -16,7 +16,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * Method -> GetMapping, PostMapping 등
  * 위 어노테이션이 붙은 Bean 을 조회
  */
-@RequestMapping
+@RequestMapping("/hello")
+// 빈을 등록해달라는 label 같은 개념 -> Spring Container 야 빈으로 등록해줘
+// ComponentScan 이 아래 어노테이션 클래스를 조회하여 빈으로 등록
+@RestController
 public class HelloController {
 
   private final HelloService helloService;
@@ -35,8 +38,7 @@ public class HelloController {
    * 단순 String 으로 응답 하고 싶다면 ResponseBody 어노테이션을 붙여야됨.
    * 만약 클래스에 RestController 을 붙이면 하위 메소드는 모두 ResponseBody 가 붙어있다고 가정한다.
    */
-  @GetMapping("/hello")
-  @ResponseBody
+  @GetMapping
   public String hello(String name) {
     return helloService.sayHello(Objects.requireNonNull(name));
   }

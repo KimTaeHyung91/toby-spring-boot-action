@@ -2,28 +2,16 @@ package com.example.tobySpringBootAction;
 
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.boot.web.server.WebServer;
-import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
 
 // Spring Container 가 빈 구성 정보를 가지고 있는 클래스 라고 인식
 @Configuration
+// 해당 어노테이션이 붙은 클래스가 포함 패키지를 시작으로 하위 패키지까지 @Component 가 붙은 클래스를 검색하여 빈으로 등록한다.
+@ComponentScan
 public class HelloBootApplication {
-
-  /**
-   * Factory Method 를 이용해서 bean 생성, 의존관계 주입을 할 수 있음. 아래가 Factory Method -> Spring Container 에서 아래
-   * 메소드를 보고 빈 생성 및 주입 -> Bean 어노테이션을 붙임 타입 메소드명(인자) 메소드명 = 빈 이름 인자 = 의존관계 주입을 할 대상
-   */
-  @Bean
-  public HelloController helloController(HelloService helloService) {
-    return new HelloController(helloService);
-  }
-
-  @Bean
-  public HelloService helloService() {
-    return new SimpleHelloService();
-  }
 
   public static void main(String[] args) {
 
