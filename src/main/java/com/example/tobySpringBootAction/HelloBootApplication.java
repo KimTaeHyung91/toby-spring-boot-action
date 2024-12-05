@@ -24,6 +24,7 @@ public class HelloBootApplication {
     // ApplicationContext(=Spring Container)
     GenericApplicationContext applicationContext = new GenericApplicationContext();
     applicationContext.registerBean(HelloController.class);
+    // Spring Container 에서 Bean 을 등록 할때 HelloController 에 선언되어있는 HelloService 인터페이스 구현체를 조회하여 알아서 DI 를 넣어줌
     applicationContext.registerBean(SimpleHelloService.class);
 
     // Spring Container 초기화 -> 등록되어있는 메타데이터를 초기화
