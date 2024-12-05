@@ -24,6 +24,8 @@ public class HelloBootApplication {
     // ApplicationContext(=Spring Container)
     GenericApplicationContext applicationContext = new GenericApplicationContext();
     applicationContext.registerBean(HelloController.class);
+    applicationContext.registerBean(SimpleHelloService.class);
+
     // Spring Container 초기화 -> 등록되어있는 메타데이터를 초기화
     applicationContext.refresh();
 

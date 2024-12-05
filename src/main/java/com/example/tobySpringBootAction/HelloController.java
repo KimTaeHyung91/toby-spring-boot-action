@@ -9,6 +9,13 @@ import java.util.Objects;
  * Servlet -> Java 진영에서 웹 요청을 처리하고 응답하는 컴포넌트
  */
 public class HelloController {
+
+  private final HelloService helloService;
+
+  public HelloController(HelloService helloService) {
+    this.helloService = helloService;
+  }
+
   /**
    *
    * Http Get Method 처리
@@ -16,7 +23,6 @@ public class HelloController {
    * http://localhost:8080/hello?name=spring
    */
   public String hello(String name) {
-    SimpleHelloService helloService = new SimpleHelloService();
     return helloService.sayHello(Objects.requireNonNull(name));
   }
 }
