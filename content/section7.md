@@ -117,6 +117,10 @@ classDiagram
 하드 코딩으로 @Import 를 하는것이 아닌 동적으로 구성 정보 클래스를 로딩하게 만들어주는 Interface
 DeferredImportSelector 인터페이스의 실행 시점은 @Configuration 클래스를 모두 등록 된 후 실행
 동적으로 DB 정보를 불러온다던가 외부 환경 정보(외부 API) 를 불러오든 동적으로 호출 가능
+
+#### com.example.config.MyAutoConfiguration.imports 으로 동적 구성정보 가능
+
+해당 파일에 Import 를 해야되는 Configuration 파일을 작성해주면 SpringBoot 로딩 시 자동으로 구성정보를 로딩 가능
 </div>
 
 
