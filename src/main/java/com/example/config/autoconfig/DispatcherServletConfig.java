@@ -1,19 +1,11 @@
-package com.example.tobySpringBootAction;
+package com.example.config.autoconfig;
 
-import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
-import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.DispatcherServlet;
 
-// @Component 를 포함하고 있음.
 @Configuration
-public class Config {
-
-  @Bean
-  public ServletWebServerFactory servletWebServerFactory() {
-    return new TomcatServletWebServerFactory();
-  }
+public class DispatcherServletConfig {
 
   @Bean
   public DispatcherServlet dispatcherServlet() {
@@ -23,5 +15,4 @@ public class Config {
      */
     return new DispatcherServlet();
   }
-
 }
