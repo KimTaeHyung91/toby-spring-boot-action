@@ -1,7 +1,5 @@
 package com.example.config;
 
-import com.example.config.autoconfig.DispatcherServletConfig;
-import com.example.config.autoconfig.TomcatWebServerConfig;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -13,6 +11,6 @@ import org.springframework.context.annotation.Import;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-@Import({DispatcherServletConfig.class, TomcatWebServerConfig.class}) // 다른 패키지에 있는 구성정보를 가져올때 쓰이는 애노테이션
+@Import(MyAutoConfigSelector.class) // 다른 패키지에 있는 구성정보를 가져올때 쓰이는 애노테이션
 public @interface EnableMyAutoConfiguration {
 }
