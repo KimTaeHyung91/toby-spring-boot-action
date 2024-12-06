@@ -33,4 +33,21 @@ public class HelloApiTest {
     assertThat(res.getBody()).isEqualTo("Hello, Spring");
 
   }
+
+  @Test
+  void failHelloApi() {
+    // given
+    // http localhost:8080/hello?name=Spring
+    // 위 엔드포인트 호출을 코드로 작성
+    TestRestTemplate testRestTemplate = new TestRestTemplate();
+
+    // when
+    ResponseEntity<String> res = testRestTemplate.getForEntity(
+        "http://localhost:8080/hello?name={name}",
+        String.class,
+        "");
+
+    // then
+    assertThat(res.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
+  }
 }
