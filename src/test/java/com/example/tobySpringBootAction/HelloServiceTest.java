@@ -1,8 +1,21 @@
 package com.example.tobySpringBootAction;
 
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.METHOD)
+@UnitTest
+@interface FastUnitTest {}
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.ANNOTATION_TYPE, ElementType.METHOD}) // ANNOTATION_TYPE 은 Meta 에노테이션이 됨. 다른 에노테이션을 만들때 Meta 에노테이션의 정보를 모두 사용 가능(상속X)
+@Test
+@interface UnitTest {}
 
 public class HelloServiceTest {
 
