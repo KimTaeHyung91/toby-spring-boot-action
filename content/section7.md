@@ -160,6 +160,30 @@ classDiagram
 
 #### @Configuration(proxyBeanMethods=false) default 는 true 인데 false 면 뭐가 다른거지?
 
+default 가 true 인 경우 아래처럼 일반 자바코드를 Configuration 안에서 Bean 으로 등록되어질떄 직접 Common, Bean1, Bean2 를 생성해서
+등록하는것이 아니고
+앞에 Proxy Object 를 앞에 두고 그게 Bean 으로 등록
+
+![img.png](img.png)
+
+즉 proxyBeanMethod 를 false 로 지정하면 Spring 이 빈을 등록할때 Proxy Object 를 만들지않고 자바코드 동작 방식 그대로 사용할 수 있게끔 처리가
+된다
+
+**[default 사용 경우]**
+
+에러 X
+![img_1.png](img_1.png)
+
+**[false 로 적용한 경우]**
+
+common 객체가 싱글톤으로 유지X
+![img_2.png](img_2.png)
+
+proxyBeanMethod = false 로 사용하는 경우가 늘어났음
+
+왜냐하면 내가 빈 팩토리 메소드를 만들어서 등록 할때 의존 관계가 있는 객체를 가져오지않는 방식으로 코드를 작성했다면
+
+매번 시간이 오래걸리는 Proxy 객체를 만들 필요가 없음
 </div>
 
 
