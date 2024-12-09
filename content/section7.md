@@ -121,6 +121,45 @@ DeferredImportSelector 인터페이스의 실행 시점은 @Configuration 클래
 #### com.example.config.MyAutoConfiguration.imports 으로 동적 구성정보 가능
 
 해당 파일에 Import 를 해야되는 Configuration 파일을 작성해주면 SpringBoot 로딩 시 자동으로 구성정보를 로딩 가능
+
+#### 애플리케이션 인프라스트럭처 빈 구조
+
+```mermaid
+classDiagram
+    direction BT
+    class MySpringBootApplication
+    class EnableMyAutoConfiguration
+    class MyAutoConfigImportSelector
+    <<annotation>> MySpringBootApplication
+    <<annotation>> EnableMyAutoConfiguration
+    MySpringBootApplication ..> EnableMyAutoConfiguration: meta
+    EnableMyAutoConfiguration ..> MyAutoConfigImportSelector: import
+```
+
+```mermaid
+classDiagram
+    direction RL
+    class DispatcherServletConfig
+    class TomcatWebServerConfig
+    class MyAutoConfigImportSelector
+
+    DispatcherServletConfig ..> MyAutoConfigImportSelector: load
+    TomcatWebServerConfig ..> MyAutoConfigImportSelector: load
+```
+
+```mermaid
+classDiagram
+    direction BT
+    class DispatcherServletConfig
+    class TomcatWebServerConfig
+    class MyAutoConfiguration
+    <<annotation>> MyAutoConfiguration
+    DispatcherServletConfig ..> MyAutoConfiguration
+    TomcatWebServerConfig ..> MyAutoConfiguration
+```
+
+#### @Configuration(proxyBeanMethods=false) default 는 true 인데 false 면 뭐가 다른거지?
+
 </div>
 
 
