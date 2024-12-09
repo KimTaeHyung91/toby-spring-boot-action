@@ -6,6 +6,7 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import java.util.Map;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.context.annotation.Bean;
@@ -38,16 +39,15 @@ public class ConditionalTest {
 
   @Retention(RetentionPolicy.RUNTIME)
   @Target(ElementType.TYPE)
-  @Conditional(TrueCondition.class)
-  @interface TrueConditional {}
+  @Conditional(BooleanCondition.class)
+  @interface BooleanConditional {
 
-  @Retention(RetentionPolicy.RUNTIME)
-  @Target(ElementType.TYPE)
-  @Conditional(FalseCondition.class)
-  @interface FalseConditional {}
+    // 엘리먼트가 단독으로 쓰이면 호출하는곳에서 생략 가능
+    boolean value();
+  }
 
   @Configuration
-  @TrueConditional
+  @BooleanConditional(true)
   static class Config1 {
 
     @Bean
@@ -57,7 +57,7 @@ public class ConditionalTest {
   }
 
   @Configuration
-  @FalseConditional
+  @BooleanConditional(false)
   static class Config2 {
 
     @Bean
@@ -68,19 +68,14 @@ public class ConditionalTest {
 
   static class MyBean {}
 
-  static class TrueCondition implements Condition {
+  static class BooleanCondition implements Condition {
 
     @Override
     public boolean matches(ConditionContext context, AnnotatedTypeMetadata metadata) {
-      return true;
-    }
-  }
-
-  static class FalseCondition implements Condition {
-
-    @Override
-    public boolean matches(ConditionContext context, AnnotatedTypeMetadata metadata) {
-      return false;
+      // BooleanConditional 에노테이션이 붙어있는 클래스를 탐색
+      // 그 클래스에서 선언되어있는 해당 에노테이션의 엘리먼트 속성을 가져옴
+      Map<String, Object> annotationAttributes = metadata.getAnnotationAttributes(BooleanConditional.class.getName());
+      return (Boolean) annotationAttributes.get("value");
     }
   }
 }
