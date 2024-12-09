@@ -15,4 +15,34 @@ spring-boot-autoconfigure-2.7.6.jar!
 
 내가 만약 144개의 구성정보를 포함하는 빈중에 사용안하는게 존재한다면? 조건부로 자동 로딩
 
+### Condition 설계
+
+Bean Factory 메소드에도 Conditional 을 적용 가능
+
+그리고 Condition 을 구현하는 메소드에서 true 이면 빈 등록, false 도 빈 등록X
+
+적용 Scope: Class -> Method
+
+e.g) Class 레벨에서 false, Method 레벨에서 true 이면 애초에 Method 레벨은 검사X
+Class 레벨에서 true 가 되어야 검사
+
+```mermaid
+classDiagram
+    direction BT
+    class Condition
+    class Conditional
+    class MyConfiguration
+    class MyBean
+    <<interface>> Condition
+    <<annotation>> Conditional
+    <<ConfigurationClass>> MyConfiguration
+    <<BeanMethod>> MyBean
+    Conditional ..> Condition: element
+    MyConfiguration ..> Conditional: annotate
+    MyBean ..> Conditional: annotate
+    Condition ..> MyConfiguration: matches 결과
+    Condition ..> MyBean: matches 결과
+
+```
+
 </div>
