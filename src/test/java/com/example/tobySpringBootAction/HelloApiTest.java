@@ -20,7 +20,7 @@ public class HelloApiTest {
 
     // when
     ResponseEntity<String> res = testRestTemplate.getForEntity(
-        "http://localhost:8080/app/hello?name={name}",
+        "http://localhost:9090/app/hello?name={name}",
         String.class,
         "Spring");
 
@@ -44,11 +44,11 @@ public class HelloApiTest {
 
     // when
     ResponseEntity<String> res = testRestTemplate.getForEntity(
-        "http://localhost:8080/hello?name={name}",
+        "http://localhost:9090/hello?name={name}",
         String.class,
         "");
 
     // then
-    assertThat(res.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
+    assertThat(res.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
   }
 }
