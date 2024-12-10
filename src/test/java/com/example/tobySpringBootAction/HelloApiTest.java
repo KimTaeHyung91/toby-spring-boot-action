@@ -3,13 +3,18 @@ package com.example.tobySpringBootAction;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
-@HelloBootTest
+/**
+ * 해당 element 는 기본적으로 resource/application.properties 에 있는 port 값을 적용함.
+ */
+@SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT)
 public class HelloApiTest {
 
   @Test
