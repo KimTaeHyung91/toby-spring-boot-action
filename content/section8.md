@@ -45,4 +45,32 @@ classDiagram
 
 ```
 
+### Tomcat.class 와 Server.class(jetty) 클래스 유무에 따라 조건부로 구성 정보 로딩
+
+ClassUtil 을 이용해서 체크
+
+```mermaid
+classDiagram
+    direction BT
+    class MyConfig
+    class ConditionalMyOnClass
+    class Conditional
+    class OnMyClassCondition
+    class Condition
+    <<interface>> Condition
+    MyConfig ..> ConditionalMyOnClass: annotate
+    ConditionalMyOnClass ..> Conditional: meta annotation
+    Conditional --> OnMyClassCondition: element
+    OnMyClassCondition ..|> Condition
+    ConditionalMyOnClass --> OnMyClassCondition: attribute(element)
+    OnMyClassCondition --> MyConfig: matches()
+```
+
+### 자동 구성 대체하기
+
+AutoConfiguration 보다 사용자가 직접 빈을 구성정보를 등록하면 Spring Container 에서는 사용자 빈을 우선적으로 등록하고, 그 후 자동 구성 정보를
+등록하게 된다.
+
+이때 빈을 등록 하려는 객체 타입이 같아진다면 이미 사용자 구성정보가 다 등록되고 Auto Configuration 을 등록하는거니 @ConditionOnMissingBean 을
+이용하자
 </div>
