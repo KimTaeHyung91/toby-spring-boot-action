@@ -12,8 +12,10 @@ import org.junit.jupiter.api.Test;
 @Target(ElementType.METHOD)
 @UnitTest
 @interface FastUnitTest {}
+
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.ANNOTATION_TYPE, ElementType.METHOD}) // ANNOTATION_TYPE 은 Meta 에노테이션이 됨. 다른 에노테이션을 만들때 Meta 에노테이션의 정보를 모두 사용 가능(상속X)
+@Target({ElementType.ANNOTATION_TYPE, ElementType.METHOD})
+// ANNOTATION_TYPE 은 Meta 에노테이션이 됨. 다른 에노테이션을 만들때 Meta 에노테이션의 정보를 모두 사용 가능(상속X)
 @Test
 @interface UnitTest {}
 
@@ -23,12 +25,24 @@ public class HelloServiceTest {
   // 또한 테스트를 고립된 상태에서 진행 가능
   @Test
   void simpleHelloService() {
-    SimpleHelloService simpleHelloService = new SimpleHelloService();
+    SimpleHelloService simpleHelloService = new SimpleHelloService(helloRepositoryStub);
 
     String test = simpleHelloService.sayHello("Test");
 
     Assertions.assertThat(test).isEqualTo("Hello, Test");
   }
+
+  private static final HelloRepository helloRepositoryStub = new HelloRepository() {
+    @Override
+    public Hello findHello(String name) {
+      return null;
+    }
+
+    @Override
+    public void increaseCount(String name) {
+    }
+  };
+
 
   @Test
   void helloDecorator() {
