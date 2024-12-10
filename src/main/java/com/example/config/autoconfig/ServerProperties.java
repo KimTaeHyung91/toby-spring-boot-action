@@ -1,14 +1,12 @@
 package com.example.config.autoconfig;
 
-import org.springframework.beans.factory.annotation.Value;
+import com.example.config.MyConfigurationProperties;
 
+@MyConfigurationProperties(prefix = "server")
 public class ServerProperties {
 
-  @Value("${contextPath}")
   private String contextPath;
 
-  // : 이후에는 default 값이 지정
-  @Value("${port:8080}")
   private int port;
 
   public String getContextPath() {
