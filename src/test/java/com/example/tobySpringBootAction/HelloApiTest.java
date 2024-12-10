@@ -20,7 +20,7 @@ public class HelloApiTest {
 
     // when
     ResponseEntity<String> res = testRestTemplate.getForEntity(
-        "http://localhost:8080/hello?name={name}",
+        "http://localhost:8080/app/hello?name={name}",
         String.class,
         "Spring");
 
@@ -28,7 +28,8 @@ public class HelloApiTest {
     // status code 200
     assertThat(res.getStatusCode()).isEqualTo(HttpStatus.OK);
     // header(content-type) text/plain
-    assertThat(res.getHeaders().getFirst(HttpHeaders.CONTENT_TYPE)).startsWith(MediaType.TEXT_PLAIN_VALUE);
+    assertThat(res.getHeaders()
+                  .getFirst(HttpHeaders.CONTENT_TYPE)).startsWith(MediaType.TEXT_PLAIN_VALUE);
     // body Hello, Spring
     assertThat(res.getBody()).isEqualTo("*Hello, Spring*");
 
