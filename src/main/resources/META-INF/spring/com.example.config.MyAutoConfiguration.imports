@@ -3,3 +3,4 @@ com.example.config.autoconfig.JettyWebServerConfig
 com.example.config.autoconfig.DispatcherServletConfig
 com.example.config.autoconfig.PropertyPlaceHolderConfig
 com.example.config.autoconfig.PropertyPostProcessorConfig
+com.example.config.autoconfig.DataSourceConfig
