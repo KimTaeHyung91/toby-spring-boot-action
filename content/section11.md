@@ -62,4 +62,17 @@ Springboot Starter + Dependency: 의존 라이브러리 및 클래스 추가
 @Conditional: 어떤 조건으로 어떤 구성 정보를 로딩하는지 판별
 
 자동구성 인프라스트럭처 빈 + 유저 구성 애플리케이션 빈 = SpringBoot 가 하나의 애플리케이션 구성 정보를 생성
+
+### Springboot 의 자동 구성으로 어떤게 적용되어있나?
+
+spring-boot-starter 에 기본적으로 포함되어있는 자동 구성 정보 빈
+
+```mermaid
+block-beta
+    columns 2
+    debug["-Ddebug, --debug\n(자동 구성 클래스 Condition 결과 로그)"] sbr["SpringBoot Reference\n(문서에서 관련 기술, 자동 구성 프로퍼티 확인 )"]
+    cer["ConditionEvaluationReport\n(자동 구성 클래스 Condition 결과 빈)"] a["@AutoConfiguration\n@Conditional\nCondition\n@Bean\n(자동 구성 클래스와 조건, 빈 확인)"]
+    lbf["ListableBeanFactory\n(등록된 빈 확인)"] p["Properties\nBind\nCustomizer\nConfigure\n(프로퍼티 클래스와 바인딩)"]
+```
+
 </div>
